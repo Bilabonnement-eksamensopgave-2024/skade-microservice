@@ -1,0 +1,7 @@
+﻿DamageTypeID,DamageType,Severity,RepairCost
+1,Ridse,Minor,500
+2,Bule,Moderate,1500
+3,Knust forrude,Severe,3000
+4,Punkteret dæk,Minor,800
+5,Motorproblem,Severe,5000
+6,Lakskade,Moderate,2000
