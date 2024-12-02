@@ -4,13 +4,12 @@ import requests
 
 app = Flask(__name__)
 
-#Get all damage types
-@app.route('/reservations', methods=['GET'])
-def get_all_get_all_damage_types():
-
-    result = get_all_get_all_damage_types()
-
+# Get all damage types
+@app.route('/get_damage_types', methods=['GET'])
+def get_damage_types_route():
+    result = get_all_damage_types()
     return jsonify(result[1]), result[0]
+
 
 
 if __name__ == '__main__':
