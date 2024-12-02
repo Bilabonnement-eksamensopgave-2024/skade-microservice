@@ -69,10 +69,96 @@ def find_type_by_id(id):
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
 
+def update_type(id, data):
+    try:
+        if not data:
+            return [400, {"message": "No data provided for update."}]
 
+        with sqlite3.connect(DB_NAME) as conn:
+            cur = conn.cursor()
 
+            
+            query = f"UPDATE {TABLE_NAME} SET "
+            updates = []
+            values = []
 
+            for key, value in data.items():
+                if key != "id":  
+                    updates.append(f"{key} = ?")
+                    values.append(value)
 
+            query += ", ".join(updates)
+            query += " WHERE id = ?"
+            values.append(id) 
+
+            cur.execute(query, values)
+
+            if cur.rowcount == 0:
+                return [404, {"message": "Damage type not found."}]
+
+            return [200, {"message": "Damage type updated successfully."}]
+
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+
+def add_new_types(data):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            cur = conn.cursor()
+
+            # Check if ID is provided in the data
+            if "id" in data and data["id"] is not None:
+                cur.execute(
+                    f'''
+                    INSERT OR IGNORE INTO {TABLE_NAME}
+                    (id, damage_type, severity, repair_cost)
+                    VALUES (?, ?, ?, ?)
+                    ''',
+                    (
+                        data["id"],
+                        data["damage_type"],
+                        data["severity"],
+                        data["repair_cost"]
+                    )
+                )
+            else:
+                # Insert without ID, letting the database auto-assign it
+                cur.execute(
+                    f'''
+                    INSERT INTO {TABLE_NAME}
+                    (damage_type, severity, repair_cost)
+                    VALUES (?, ?, ?)
+                    ''',
+                    (
+                        data["damage_type"],
+                        data["severity"],
+                        data["repair_cost"]
+                    )
+                )
+
+            if cur.rowcount == 0:
+                return [409, {"message": "Type already exists in the database."}]
+            
+            return [201, {"message": "New type added to database successfully."}]
+
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+
+def delete_type_by_id(id):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            cur = conn.cursor()
+
+            # Delete the row with the specified id
+            cur.execute(f'DELETE FROM {TABLE_NAME} WHERE id = ?', (id,))
+            
+            if cur.rowcount == 0:
+                return [404, {"message": "Type not found."}]
+            
+            return [204, {"message": f"Type deleted from {TABLE_NAME} successfully."}]
+
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
 
 
 #create_table()
