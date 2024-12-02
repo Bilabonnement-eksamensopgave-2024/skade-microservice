@@ -2,7 +2,7 @@
 
 # Endpoints
 
-This API provides several endpoints for managing damage types. Each damage type contains information about the type of damage, its severity, and associated repair costs.
+This API provides several endpoints for managing damage types. Each damage type contains information about the type of damage, its severity, and associated repair costs.s
 
 ## Get All Damage Types
 - **URL:** `/damage_types`
