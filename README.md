@@ -9,17 +9,15 @@ This API provides several endpoints for managing damage types. Each damage type 
 - **Method:** `GET`
 - **Response:**
   ```json
-  {
-    "data": [
-      {
-        "DamageTypeID": 1,
-        "DamageType": "Ridse",
-        "Severity": "Minor",
-        "RepairCost": 500
-      },
-      // ... additional damage types
-    ]
-  }
+  [
+    {
+      "id": 1,
+      "damage_type": "Ridse",
+      "severity": "Minor",
+      "repair_cost": 500
+    }
+    // ... additional damage types
+  ]
   ```
 - **Success Response Code:** `200 OK`
 
@@ -30,12 +28,10 @@ This API provides several endpoints for managing damage types. Each damage type 
 - **Response:**
   ```json
   {
-    "data": {
-      "DamageTypeID": 1,
-      "DamageType": "Ridse",
-      "Severity": "Minor",
-      "RepairCost": 500
-    }
+    "id": 1,
+    "damage_type": "Ridse",
+    "severity": "Minor",
+    "repair_cost": 500
   }
   ```
 - **Success Response Code:** `200 OK`
@@ -47,9 +43,10 @@ This API provides several endpoints for managing damage types. Each damage type 
 - **Request Body:**
   ```json
   {
-    "DamageType": "Ridse",
-    "Severity": "Minor",
-    "RepairCost": 500
+    "id": 1,
+    "damage_type": "Ridse",
+    "severity": "Minor",
+    "repair_cost": 500
   }
   ```
 - **Success Response Code:** `200 OK`
@@ -61,9 +58,9 @@ This API provides several endpoints for managing damage types. Each damage type 
 - **Request Body:**
   ```json
   {
-    "DamageType": "Ridse",
-    "Severity": "Minor",
-    "RepairCost": 500
+    "damage_type": "Ridse",
+    "severity": "Minor",
+    "repair_cost": 500
   }
   ```
 - **Success Response Code:** `200 OK`
@@ -77,11 +74,10 @@ This API provides several endpoints for managing damage types. Each damage type 
 
 ## Data Structure
 Each damage type contains the following fields:
-- `DamageTypeID`: Unique identifier for the damage type (integer)
-- `DamageType`: Name/description of the damage type (string)
-- `Severity`: Severity level of the damage (Minor, Moderate, Severe)
-- `RepairCost`: Estimated cost of repair in currency units (integer)
-
+- `id`: Unique identifier for the damage type (integer)
+- `damage_type`: Name/description of the damage type (string)
+- `severity`: Severity level of the damage (Minor, Moderate, Severe)
+- `repair_cost`: Estimated cost of repair in currency units (integer)
 
 
 
