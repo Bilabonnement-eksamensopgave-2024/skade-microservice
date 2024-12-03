@@ -1,0 +1,33 @@
+tags:
+  - name: Damage Types
+summary: Add a new damage type
+description: Add a new damage type to the database
+parameters:
+  - in: body
+    name: body
+    required: true
+    description: Damage type object to add
+    schema:
+      type: object
+      properties:
+        damage_type:
+          type: string
+        severity:
+          type: string
+        repair_cost:
+          type: integer
+responses:
+  201:
+    description: New type added to database successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "New type added to database successfully."
+  400:
+    description: Bad request
+  500:
+    description: Internal server error

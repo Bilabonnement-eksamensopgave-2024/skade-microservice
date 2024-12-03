@@ -1,16 +1,75 @@
 from flask import Flask, jsonify, request
 from damage_type import get_all_damage_types, find_type_by_id, update_type, add_new_types, delete_type_by_id
 import requests
+import sqlite3
+import bcrypt
+import os
+import jwt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from dotenv import load_dotenv
+from flasgger import swag_from
+import datetime
+from swagger.config import init_swagger
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 
+# Configuration
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+# Initialize Swagger
+init_swagger(app)
+
+#---------------------------------------------------------------- 
+@app.route('/', methods=['GET'])
+def service_info():
+    return jsonify({
+        "service": "Damage Types Microservice",
+        "description": "This microservice handles operations related to damage types, such as retrieving, adding, updating, and deleting damage types.",
+        "endpoints": [
+            {
+                "path": "/damage_types",
+                "method": "GET",
+                "description": "Retrieve a list of all damage types",
+                "response": "JSON array of damage type objects"
+            },
+            {
+                "path": "/damage_types/<int:id>",
+                "method": "GET",
+                "description": "Retrieve a specific damage type by ID",
+                "response": "JSON object of a specific damage type or 404 error"
+            },
+            {
+                "path": "/damage_types",
+                "method": "POST",
+                "description": "Add a new damage type",
+                "response": "JSON object with success message or error"
+            },
+            {
+                "path": "/damage_types/<int:id>",
+                "method": "PATCH",
+                "description": "Update an existing damage type by ID",
+                "response": "JSON object with success message or 404 error"
+            },
+            {
+                "path": "/damage_types/<int:id>",
+                "method": "DELETE",
+                "description": "Delete a damage type by ID",
+                "response": "JSON object with success message or 404 error"
+            }
+        ]
+    })
+
 # Get all damage types
+#@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types', methods=['GET'])
 def get_damage_types_route():
     result = get_all_damage_types()
     return jsonify(result[1]), result[0]
 
 #Find type by id
+#@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['GET'])
 def find_type_by_id_ropute(id):
     result = find_type_by_id(id)
@@ -18,6 +77,7 @@ def find_type_by_id_ropute(id):
     return jsonify(result[1]), result[0]
 
 #Update damage type
+#@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['PATCH'])
 def update_damage_types(id):
     data = request.json 
@@ -29,6 +89,7 @@ def update_damage_types(id):
     return jsonify(result[1]), result[0]
 
 #Add a damage type
+#@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types', methods=['POST'])
 def add_to_types():
     data = request.json
@@ -45,6 +106,7 @@ def add_to_types():
     return jsonify(result[1]), result[0]
 
 # Delete type form table
+#@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['DELETE'])
 def delete_type_from_damage_type(id):
 
