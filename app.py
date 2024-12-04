@@ -141,7 +141,16 @@ def get_the_selected_damage_report(id):
     return jsonify(data), status
 
 # Get damage report by carid
+@app.route('/damage-reports/cars/<int:id>', methods=['GET'])
+def get_the_selected_damage_report_carid(id):
+    status, data = damage_reports.get_damage_reports_by_carid(carid=id)
+    return jsonify(data), status
 
+# Get damage report by subscriptionsid 
+@app.route('/damage-reports/subscriptions/<int:id>', methods=['GET'])
+def get_the_selected_damage_report_subscriptionid(id):
+    status, data = damage_reports.get_damage_reports_by_subscriptionid(subscriptionid=id)
+    return jsonify(data), status
 
 
 

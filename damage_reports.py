@@ -79,12 +79,29 @@ def get_damage_reports_by_carid(carid : int):
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE carid = ?', (carid,))
         
-            data = cur.fetchone()
+            data = cur.fetchall()
     
-            if data is None:
+            if not data:
                 return [404, {'message': 'Damage report not found'}]
             
-            return [200, [dict(data)]]
+            return [200, [dict(row) for row in data]]
+        
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+    
+def get_damage_reports_by_subscriptionid(subscriptionid : int):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE subscriptionid = ?', (subscriptionid,))
+        
+            data = cur.fetchall()
+    
+            if not data:
+                return [404, {'message': 'Damage report not found'}]
+            
+            return [200, [dict(row) for row in data]]
         
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
