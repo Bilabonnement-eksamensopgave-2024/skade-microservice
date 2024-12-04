@@ -126,6 +126,9 @@ def _data_to_damage_type_dict(data):
         "repair_cost": int(data["repair_cost"]) if data["repair_cost"] else None,
     }
 
+#-------------------------------------------------------------Damage Reports
+
+
 
 
 if __name__ == '__main__':

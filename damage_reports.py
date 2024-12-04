@@ -38,6 +38,25 @@ def add_csv_file_to_db(filepath):
             conn.commit()
             print(f"Data from '{filepath}' has been imported into '{TABLE_NAME}'.")
 
+def get_all_damage_reports():
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(f'SELECT * FROM {TABLE_NAME}')
+
+            data = cur.fetchall
+
+            if data: 
+                return [200, [dict(row) for row in data]]
+            else:
+                return [204, {'message': f'No items in the {TABLE_NAME}'}]
+    
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+
+        
+
 
 
 #create_table()
