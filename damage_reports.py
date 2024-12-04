@@ -183,6 +183,25 @@ def add_new_damage_report(
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]    
   
+def delete_damage_report(damagereportid):
+    try:
+        with sqlite3.connect(DB_NAME) as conn: 
+            cur = conn.cursor()
+
+            delete_query = f'DELETE FROM {TABLE_NAME} WHERE damagereportid = ?'
+            cur.execute(delete_query, (damagereportid,))
+            
+            if cur.rowcount == 0: 
+                return [404, {"message": "Damage report not found"}]
+            
+            cur.execute(f"UPDATE sqlite_sequence SET seq = (SELECT MAX(damagereportid) FROM {TABLE_NAME} WHERE name = '{TABLE_NAME}')")
+            conn.commit()
+
+
+            return [200, {"message": "Damage report deleted successfully and ID sequence reset"}]
+    
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
 
 
 

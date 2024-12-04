@@ -193,6 +193,10 @@ def add_damage_report():
 
     return jsonify(response_data), status
 
+@app.route('/damage-reports/<int:id>', methods=['DELETE'])
+def delete_damage_report (id):
+    status, response_data = damage_reports.delete_damage_report(damagereportid=id)
+    return jsonify(response_data), status
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
