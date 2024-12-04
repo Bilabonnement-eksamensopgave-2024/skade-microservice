@@ -1,5 +1,6 @@
 import sqlite3
 import csv
+from datetime import date
 
 DB_NAME = "damage_reports.db"
 TABLE_NAME = "reports"
@@ -156,6 +157,33 @@ def update_damage_report(damagereportid: int, update_fields: dict):
     
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
+    
+
+def add_new_damage_report(
+        carid: int, subscriptionid: int, reportdate: date, 
+        description: str, damagetypeid: int ):
+    try:
+        with sqlite3.connect(DB_NAME) as conn: 
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+
+            query = f'''
+            INSERT INTO {TABLE_NAME} ( carid, subscriptionid, reportdate,
+            description, damagetypeid) 
+            VALUES (?,?,?,?,?)
+            '''
+
+            cur.execute(query, (carid,subscriptionid,reportdate,description,damagetypeid))
+            conn.commit()
+
+            return [200, {'message': 'New damage report added succesfully'}]
+    
+    except sqlite3.IntegrityError:
+        return [409, {"error": "Damage report already exists with these details."}]
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]    
+  
+
 
 
 #create_table()
