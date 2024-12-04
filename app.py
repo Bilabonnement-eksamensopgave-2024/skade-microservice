@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from flasgger import swag_from
 import datetime
 from swagger.config import init_swagger
+from damage_reports import get_damage_reports, get_damage_reports_by_id
 # Load environment variables from .env file
 load_dotenv()
 
@@ -127,7 +128,17 @@ def _data_to_damage_type_dict(data):
     }
 
 #-------------------------------------------------------------Damage Reports
+# Get all damage reports
+@app.route('/damage-reports', methods=['GET'])
+def get_all_damage_reports():
+    status, data = get_damage_reports()
+    return jsonify(data), status
 
+# Get damage report by id 
+@app.route('/damage-reports/<int:id>', methods=['GET'])
+def get_the_selected_damage_report(id):
+    status, data = get_damage_reports_by_id(damagereportid=id)
+    return jsonify(data), status
 
 
 

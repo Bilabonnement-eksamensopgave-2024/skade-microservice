@@ -38,14 +38,14 @@ def add_csv_file_to_db(filepath):
             conn.commit()
             print(f"Data from '{filepath}' has been imported into '{TABLE_NAME}'.")
 
-def get_all_damage_reports():
+def get_damage_reports():
     try:
         with sqlite3.connect(DB_NAME) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME}')
 
-            data = cur.fetchall
+            data = cur.fetchall()
 
             if data: 
                 return [200, [dict(row) for row in data]]
@@ -55,7 +55,22 @@ def get_all_damage_reports():
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
 
+def get_damage_reports_by_id(damagereportid : int):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE damagereportid = ?', (damagereportid,))
         
+            data = cur.fetchone()
+
+            if data is None:
+                return [404, {'message': 'Damage report not found'}]
+            
+            return [200, [dict(data)]]
+        
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
 
 
 
