@@ -158,6 +158,15 @@ def get_total_cost_by_subscriptionid(id):
     status, data = damage_reports.get_the_repair_cost_by_subid(subscriptionid=id)
     return jsonify(data), status
 
+# Update damage report 
+@app.route('/damage-reports/<int:id>', methods=['PATCH'])
+def update_damage_report_by_id(id):
+    update_fields = request.json
+
+    status, data = damage_reports.update_damage_report(damagereportid= id, update_fields= update_fields)
+
+    return jsonify(data), status
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

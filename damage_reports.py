@@ -131,6 +131,32 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
    
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
+    
+def update_damage_report(damagereportid: int, update_fields: dict): 
+    try: 
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+
+            set_clause = ", ".join(f'{key} = ?' for key in update_fields.keys())
+            values = list(update_fields.values()) + [damagereportid]
+            
+            query = f'''
+            UPDATE {TABLE_NAME}
+            SET {set_clause}
+            WHERE damagereportid = ? '''
+
+            cur.execute(query, values)
+
+            if cur.rowcount > 0: 
+                conn.commit()
+                return [200, {"message": "Damage report updated successfully", "damage_report_id": damagereportid}]
+            else: 
+                return [404, {"message": "Damage report not found"}]
+    
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+
 
 #create_table()
 #add_csv_file_to_db('damage_reports.csv')
