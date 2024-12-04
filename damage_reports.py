@@ -105,6 +105,32 @@ def get_damage_reports_by_subscriptionid(subscriptionid : int):
         
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
+    
+def get_the_repair_cost_by_subid(subscriptionid: int):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+
+            # Attaches the second database damage_types.db
+            cur.execute("ATTACH DATABASE 'damage_type.db' AS damage_type_db;")
+
+            query = f''' 
+            SELECT SUM(damage.repair_cost) AS total_amount
+            FROM {TABLE_NAME}
+            JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
+            WHERE {TABLE_NAME}.subscriptionid = ?'''
+
+            cur.execute(query, (subscriptionid,))
+            data = cur.fetchone()
+
+            if data and data[0] is not None: 
+                return [200, {"subscriptionid": subscriptionid, "total_amount": data[0]}]
+            else:
+                return [404, {"message": "No damages found for the given subscription ID"}]
+   
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
 
 #create_table()
 #add_csv_file_to_db('damage_reports.csv')
