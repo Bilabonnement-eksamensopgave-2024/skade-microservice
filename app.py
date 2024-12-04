@@ -127,7 +127,7 @@ def _data_to_damage_type_dict(data):
         "repair_cost": int(data["repair_cost"]) if data["repair_cost"] else None,
     }
 
-#-------------------------------------------------------------Damage Reports
+#-------------------------------------------------------------Damage Reports routes
 # Get all damage reports
 @app.route('/damage-reports', methods=['GET'])
 def get_all_damage_reports():
@@ -166,6 +166,32 @@ def update_damage_report_by_id(id):
     status, data = damage_reports.update_damage_report(damagereportid= id, update_fields= update_fields)
 
     return jsonify(data), status
+
+# Add new damage report
+@app.route('/damage-reports', methods=['POST'])
+def add_damage_report():
+    data = request.get_json()
+
+    car_id = data.get("carid")
+    subscription_id = data.get("subscriptionid")
+    report_date = data.get("reportdate")
+    description = data.get("description")
+    damage_type_id = data.get("damagetypeid")
+
+
+    if not all ([car_id, subscription_id, report_date, description, damage_type_id]):
+        return jsonify({"error": "All fields are required."}), 400
+    
+   
+    status, response_data = damage_reports.add_new_damage_report(
+        carid=car_id,
+        subscriptionid=subscription_id,
+        reportdate=report_date,
+        description=description,
+        damagetypeid=damage_type_id
+        )
+
+    return jsonify(response_data), status
 
 
 if __name__ == '__main__':
