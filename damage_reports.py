@@ -72,7 +72,22 @@ def get_damage_reports_by_id(damagereportid : int):
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
 
-
+def get_damage_reports_by_carid(carid : int):
+    try:
+        with sqlite3.connect(DB_NAME) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+            cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE carid = ?', (carid,))
+        
+            data = cur.fetchone()
+    
+            if data is None:
+                return [404, {'message': 'Damage report not found'}]
+            
+            return [200, [dict(data)]]
+        
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
 
 #create_table()
 #add_csv_file_to_db('damage_reports.csv')
