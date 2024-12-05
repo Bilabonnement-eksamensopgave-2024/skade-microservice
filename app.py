@@ -11,6 +11,7 @@ from flasgger import swag_from
 import datetime
 from swagger.config import init_swagger
 import damage_reports
+from collections import OrderedDict
 # Load environment variables from .env file
 load_dotenv()
 
@@ -25,10 +26,10 @@ init_swagger(app)
 #---------------------------------------------------------------- 
 @app.route('/', methods=['GET'])
 def service_info():
-    return jsonify({
-        "service": "Damage Types Microservice",
-        "description": "This microservice handles operations related to damage types, such as retrieving, adding, updating, and deleting damage types.",
-        "endpoints": [
+    damage_types_service = OrderedDict([
+        ("service", "Damage Types Microservice"),
+        ("description", "This microservice handles operations related to damage types, such as retrieving, adding, updating, and deleting damage types."),
+        ("endpoints", [
             {
                 "path": "/damage_types",
                 "method": "GET",
@@ -57,9 +58,68 @@ def service_info():
                 "path": "/damage_types/<int:id>",
                 "method": "DELETE",
                 "description": "Delete a damage type by ID",
-                "response": "JSON object with success message or 404 error"
+                "response": "JSON object with success message or error"
             }
-        ]
+        ])
+    ])
+
+    damage_reports_service = OrderedDict([
+        ("service", "Damage Report Microservice"),
+        ("description", "This microservice handles operations related to damage reports, such as retrieving, adding, updating, and deleting damage reports."),
+        ("endpoints", [
+            {
+                "path": "/damage_reports",
+                "method": "GET",
+                "description": "Retrieve a list of all damage reports",
+                "response": "JSON array of damage reports objects"
+            },
+            {
+                "path": "/damage_reports/<int:id>",
+                "method": "GET",
+                "description": "Retrieve a specific damage report by ID",
+                "response": "JSON object of a specific damage report or error"
+            },
+            {
+                "path": "/damage-reports/cars/<int:id>",
+                "method": "GET",
+                "description": "Retrieve a specific damage report by Car ID",
+                "response": "JSON object of a specific damage report or error"
+            },
+            {
+                "path": "/damage-reports/subscriptions/<int:id>",
+                "method": "GET",
+                "description": "Retrieve a specific damage report by Subscription ID",
+                "response": "JSON object of a specific damage report or error"
+            },
+            {
+                "path": "/damage-reports/subscriptions/<int:id>/total-damage",
+                "method": "GET",
+                "description": "Retrieve the total damage amount for a car by Subscription ID",
+                "response": "JSON object of the total amount and the subscription ID or 404 error"
+            },
+            {
+                "path": "/damage_reports",
+                "method": "POST",
+                "description": "Add a new damage report",
+                "response": "JSON object with success message or error"
+            },
+            {
+                "path": "/damage_reports/<int:id>",
+                "method": "PATCH",
+                "description": "Update an existing damage report by ID",
+                "response": "JSON object with success message or error"
+            },
+            {
+                "path": "/damage_reports/<int:id>",
+                "method": "DELETE",
+                "description": "Delete a damage report by ID",
+                "response": "JSON object with success message or error"
+            }
+        ])
+    ])
+
+    return jsonify({
+        "services": [damage_types_service, damage_reports_service]
     })
 
 # Get all damage types
