@@ -20,31 +20,31 @@ def service_info():
         ("description", "This microservice handles operations related to damage types, such as retrieving, adding, updating, and deleting damage types."),
         ("endpoints", [
             {
-                "path": "/damage_types",
+                "path": "/damage-types",
                 "method": "GET",
                 "description": "Retrieve a list of all damage types",
                 "response": "JSON array of damage type objects"
             },
             {
-                "path": "/damage_types/<int:id>",
+                "path": "/damage-types/<int:id>",
                 "method": "GET",
                 "description": "Retrieve a specific damage type by ID",
                 "response": "JSON object of a specific damage type or 404 error"
             },
             {
-                "path": "/damage_types",
+                "path": "/damage-types",
                 "method": "POST",
                 "description": "Add a new damage type",
                 "response": "JSON object with success message or error"
             },
             {
-                "path": "/damage_types/<int:id>",
+                "path": "/damage-types/<int:id>",
                 "method": "PATCH",
                 "description": "Update an existing damage type by ID",
                 "response": "JSON object with success message or 404 error"
             },
             {
-                "path": "/damage_types/<int:id>",
+                "path": "/damage-types/<int:id>",
                 "method": "DELETE",
                 "description": "Delete a damage type by ID",
                 "response": "JSON object with success message or error"
@@ -57,13 +57,13 @@ def service_info():
         ("description", "This microservice handles operations related to damage reports, such as retrieving, adding, updating, and deleting damage reports."),
         ("endpoints", [
             {
-                "path": "/damage_reports",
+                "path": "/damage-reports",
                 "method": "GET",
                 "description": "Retrieve a list of all damage reports",
                 "response": "JSON array of damage reports objects"
             },
             {
-                "path": "/damage_reports/<int:id>",
+                "path": "/damage-reports/<int:id>",
                 "method": "GET",
                 "description": "Retrieve a specific damage report by ID",
                 "response": "JSON object of a specific damage report or error"
@@ -113,7 +113,7 @@ def service_info():
 
 # Get all damage types
 #@role_required('user') # TODO UPDATE LATER
-@app.route('/damage_types', methods=['GET'])
+@app.route('/damage-types', methods=['GET'])
 @swag_from('swagger/get_damage_type.yaml')
 def get_damage_types_route():
     result = get_all_damage_types()
@@ -121,7 +121,7 @@ def get_damage_types_route():
 
 #Find type by id
 #@role_required('user') # TODO UPDATE LATER
-@app.route('/damage_types/<int:id>', methods=['GET'])
+@app.route('/damage-types/<int:id>', methods=['GET'])
 @swag_from('swagger/get_damage_type_by_id.yaml')
 def find_type_by_id_ropute(id):
     result = find_type_by_id(id)
@@ -130,7 +130,7 @@ def find_type_by_id_ropute(id):
 
 #Update damage type
 #@role_required('user') # TODO UPDATE LATER
-@app.route('/damage_types/<int:id>', methods=['PATCH'])
+@app.route('/damage-types/<int:id>', methods=['PATCH'])
 @swag_from('swagger/update_damage_type.yaml')
 def update_damage_types(id):
     data = request.json 
@@ -143,7 +143,7 @@ def update_damage_types(id):
 
 #Add a damage type
 #@role_required('user') # TODO UPDATE LATER
-@app.route('/damage_types', methods=['POST'])
+@app.route('/damage-types', methods=['POST'])
 @swag_from('swagger/add_damage_type.yaml')
 def add_to_types():
     data = request.json
@@ -161,7 +161,7 @@ def add_to_types():
 
 # Delete type form table
 #@role_required('user') # TODO UPDATE LATER
-@app.route('/damage_types/<int:id>', methods=['DELETE'])
+@app.route('/damage-types/<int:id>', methods=['DELETE'])
 @swag_from('swagger/delete_damage_type.yaml')
 def delete_type_from_damage_type(id):
 
