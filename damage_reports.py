@@ -1,12 +1,16 @@
 import sqlite3
 import csv
 from datetime import date
+from dotenv import load_dotenv
+import os
 
-DB_NAME = "damage_reports.db"
-TABLE_NAME = "reports"
+# Load environment variables from .env file
+load_dotenv()
+DB_PATH = os.getenv('DB_PATH', "damage.db")
+TABLE_NAME = "damge_reports"
 
 def create_table():
-    with sqlite3.connect(DB_NAME) as conn: 
+    with sqlite3.connect(DB_PATH) as conn: 
         cur = conn.cursor() 
 
         query = f''' 
@@ -22,7 +26,7 @@ def create_table():
     cur.execute(query)
 
 def add_csv_file_to_db(filepath):
-    with sqlite3.connect(DB_NAME) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
         with open(filepath, 'r', encoding='latin1') as file:
@@ -41,7 +45,7 @@ def add_csv_file_to_db(filepath):
 
 def get_damage_reports():
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME}')
@@ -58,7 +62,7 @@ def get_damage_reports():
 
 def get_damage_reports_by_id(damagereportid : int):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE damagereportid = ?', (damagereportid,))
@@ -75,7 +79,7 @@ def get_damage_reports_by_id(damagereportid : int):
 
 def get_damage_reports_by_carid(carid : int):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE carid = ?', (carid,))
@@ -92,7 +96,7 @@ def get_damage_reports_by_carid(carid : int):
     
 def get_damage_reports_by_subscriptionid(subscriptionid : int):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME} WHERE subscriptionid = ?', (subscriptionid,))
@@ -109,7 +113,7 @@ def get_damage_reports_by_subscriptionid(subscriptionid : int):
     
 def get_the_repair_cost_by_subid(subscriptionid: int):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
 
@@ -135,7 +139,7 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
     
 def update_damage_report(damagereportid: int, update_fields: dict): 
     try: 
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
 
@@ -163,7 +167,7 @@ def add_new_damage_report(
         carid: int, subscriptionid: int, reportdate: date, 
         description: str, damagetypeid: int ):
     try:
-        with sqlite3.connect(DB_NAME) as conn: 
+        with sqlite3.connect(DB_PATH) as conn: 
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
 
@@ -185,7 +189,7 @@ def add_new_damage_report(
   
 def delete_damage_report(damagereportid):
     try:
-        with sqlite3.connect(DB_NAME) as conn: 
+        with sqlite3.connect(DB_PATH) as conn: 
             cur = conn.cursor()
 
             delete_query = f'DELETE FROM {TABLE_NAME} WHERE damagereportid = ?'

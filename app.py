@@ -1,24 +1,13 @@
 from flask import Flask, jsonify, request
 from damage_type import get_all_damage_types, find_type_by_id, update_type, add_new_types, delete_type_by_id
-import requests
-import sqlite3
-import bcrypt
-import os
-import jwt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from dotenv import load_dotenv
 from flasgger import swag_from
-import datetime
 from swagger.config import init_swagger
 import damage_reports
 from collections import OrderedDict
-# Load environment variables from .env file
-load_dotenv()
+import os
 
 app = Flask(__name__)
-
-# Configuration
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 # Initialize Swagger
 init_swagger(app)
@@ -272,4 +261,4 @@ def delete_damage_report (id):
     return jsonify(response_data), status
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))

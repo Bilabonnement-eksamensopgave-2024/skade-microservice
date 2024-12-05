@@ -1,11 +1,15 @@
 import sqlite3
 import csv
+from dotenv import load_dotenv
+import os
 
-DB_NAME = 'damage_type.db'
-TABLE_NAME = 'damage'
+# Load environment variables from .env file
+load_dotenv()
+DB_PATH = os.getenv('DB_PATH', "damage.db")
+TABLE_NAME = 'damage_type'
 
 def create_table():
-    with sqlite3.connect(DB_NAME) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
 
         create_table_query = f'''
@@ -22,7 +26,7 @@ def create_table():
 
 
 def add_csv_to_db(filepath):
-    with sqlite3.connect(DB_NAME) as conn:
+    with sqlite3.connect(DB_PATH) as conn:
         cur = conn.cursor()
         
         with open(filepath, mode='r', encoding='utf-8') as file:
@@ -37,7 +41,7 @@ def add_csv_to_db(filepath):
 
 def get_all_damage_types():
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
             cur.execute(f'SELECT * FROM {TABLE_NAME}')
@@ -54,7 +58,7 @@ def get_all_damage_types():
 
 def find_type_by_id(id):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
 
@@ -74,7 +78,7 @@ def update_type(id, data):
         if not data:
             return [400, {"message": "No data provided for update."}]
 
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
 
             
@@ -103,7 +107,7 @@ def update_type(id, data):
 
 def add_new_types(data):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
 
             # Check if ID is provided in the data
@@ -146,7 +150,7 @@ def add_new_types(data):
 
 def delete_type_by_id(id):
     try:
-        with sqlite3.connect(DB_NAME) as conn:
+        with sqlite3.connect(DB_PATH) as conn:
             cur = conn.cursor()
 
             # Delete the row with the specified id
