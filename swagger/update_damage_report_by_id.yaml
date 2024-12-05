@@ -1,0 +1,70 @@
+# File: swagger/update_damage_report_by_id.yaml
+tags:
+  - name: Damage Reports
+summary: Update a damage report by ID
+description: Update an existing damage report by its ID
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: integer
+    description: The damage report ID
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          car_id:
+            type: integer
+            example: 101
+          subscription_id:
+            type: integer
+            example: 202
+          report_date:
+            type: string
+            format: date
+            example: "2024-12-01"
+          description:
+            type: string
+            example: "Scratch on the left door"
+          damage_type_id:
+            type: integer
+            example: 1
+          repair_cost:
+            type: number
+            format: float
+            example: 150.75
+responses:
+  200:
+    description: Damage report updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Damage report updated successfully"
+  404:
+    description: Damage report not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Damage report not found"
+  500:
+    description: Internal server error
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "An unexpected error occurred"

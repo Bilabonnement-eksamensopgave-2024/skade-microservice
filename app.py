@@ -125,6 +125,7 @@ def service_info():
 # Get all damage types
 #@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types', methods=['GET'])
+@swag_from('swagger/get_damage_type.yaml')
 def get_damage_types_route():
     result = get_all_damage_types()
     return jsonify(result[1]), result[0]
@@ -132,6 +133,7 @@ def get_damage_types_route():
 #Find type by id
 #@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['GET'])
+@swag_from('swagger/get_damage_type_by_id.yaml')
 def find_type_by_id_ropute(id):
     result = find_type_by_id(id)
 
@@ -140,6 +142,7 @@ def find_type_by_id_ropute(id):
 #Update damage type
 #@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['PATCH'])
+@swag_from('swagger/update_damage_type.yaml')
 def update_damage_types(id):
     data = request.json 
 
@@ -152,6 +155,7 @@ def update_damage_types(id):
 #Add a damage type
 #@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types', methods=['POST'])
+@swag_from('swagger/add_damage_type.yaml')
 def add_to_types():
     data = request.json
 
@@ -169,6 +173,7 @@ def add_to_types():
 # Delete type form table
 #@role_required('user') # TODO UPDATE LATER
 @app.route('/damage_types/<int:id>', methods=['DELETE'])
+@swag_from('swagger/delete_damage_type.yaml')
 def delete_type_from_damage_type(id):
 
     result = delete_type_by_id(id)
@@ -190,36 +195,42 @@ def _data_to_damage_type_dict(data):
 #-------------------------------------------------------------Damage Reports routes
 # Get all damage reports
 @app.route('/damage-reports', methods=['GET'])
+@swag_from('swagger/get_all_damage_reports.yaml')
 def get_all_damage_reports():
     status, data = damage_reports.get_damage_reports()
     return jsonify(data), status
 
 # Get damage report by id 
 @app.route('/damage-reports/<int:id>', methods=['GET'])
+@swag_from('swagger/get_the_selected_damage_report.yaml')
 def get_the_selected_damage_report(id):
     status, data = damage_reports.get_damage_reports_by_id(damagereportid=id)
     return jsonify(data), status
 
 # Get damage report by carid
 @app.route('/damage-reports/cars/<int:id>', methods=['GET'])
+@swag_from('swagger/get_the_selected_damage_report_carid.yaml')
 def get_the_selected_damage_report_carid(id):
     status, data = damage_reports.get_damage_reports_by_carid(carid=id)
     return jsonify(data), status
 
 # Get damage report by subscriptionsid 
 @app.route('/damage-reports/subscriptions/<int:id>', methods=['GET'])
+@swag_from('swagger/get_the_selected_damage_report_subscriptionid.yaml')
 def get_the_selected_damage_report_subscriptionid(id):
     status, data = damage_reports.get_damage_reports_by_subscriptionid(subscriptionid=id)
     return jsonify(data), status
 
 # Total amount for repair cost by subscription id 
 @app.route('/damage-reports/subscriptions/<int:id>/total-damage', methods=['GET'])
+@swag_from('swagger/get_total_cost_by_subscriptionid.yaml')
 def get_total_cost_by_subscriptionid(id):
     status, data = damage_reports.get_the_repair_cost_by_subid(subscriptionid=id)
     return jsonify(data), status
 
 # Update damage report 
 @app.route('/damage-reports/<int:id>', methods=['PATCH'])
+@swag_from('swagger/update_damage_report_by_id.yaml')
 def update_damage_report_by_id(id):
     update_fields = request.json
 
@@ -229,6 +240,7 @@ def update_damage_report_by_id(id):
 
 # Add new damage report
 @app.route('/damage-reports', methods=['POST'])
+@swag_from('swagger/add_damage_report.yaml')
 def add_damage_report():
     data = request.get_json()
 
@@ -254,6 +266,7 @@ def add_damage_report():
     return jsonify(response_data), status
 
 @app.route('/damage-reports/<int:id>', methods=['DELETE'])
+@swag_from('swagger/delete_damage_report.yaml')
 def delete_damage_report (id):
     status, response_data = damage_reports.delete_damage_report(damagereportid=id)
     return jsonify(response_data), status

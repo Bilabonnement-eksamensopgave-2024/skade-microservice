@@ -1,0 +1,15 @@
+# File: swagger/add_damage_report.yaml
+tags:
+  - name: Damage Reports
+summary: Add a new damage report
+description: Add a new damage report to the database
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          car_id:
+            type:
+            
