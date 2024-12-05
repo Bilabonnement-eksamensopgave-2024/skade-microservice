@@ -7,7 +7,7 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 DB_PATH = os.getenv('DB_PATH', "damage.db")
-TABLE_NAME = "damge_reports"
+TABLE_NAME = "damage_reports"
 
 def create_table():
     with sqlite3.connect(DB_PATH) as conn: 
@@ -116,9 +116,6 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             cur = conn.cursor()
-
-            # Attaches the second database damage_types.db
-            cur.execute("ATTACH DATABASE 'damage_type.db' AS damage_type_db;")
 
             query = f''' 
             SELECT SUM(damage.repair_cost) AS total_amount
