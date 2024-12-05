@@ -72,7 +72,7 @@ def get_damage_reports_by_id(damagereportid : int):
             if data is None:
                 return [404, {'message': 'Damage report not found'}]
             
-            return [200, [dict(data)]]
+            return [200, dict(data)]
         
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]

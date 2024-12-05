@@ -233,26 +233,36 @@ def update_damage_report_by_id(id):
 def add_damage_report():
     data = request.get_json()
 
-    car_id = data.get("carid")
-    subscription_id = data.get("subscriptionid")
-    report_date = data.get("reportdate")
-    description = data.get("description")
-    damage_type_id = data.get("damagetypeid")
+    if isinstance(data, dict):
+        # Single damage report 
+        data = [data]
+
+    if not isinstance(data,list):
+        return jsonify({"error": "Invalid input format. Must be a dict or list of dicts."}), 400
 
 
-    if not all ([car_id, subscription_id, report_date, description, damage_type_id]):
-        return jsonify({"error": "All fields are required."}), 400
-    
-   
-    status, response_data = damage_reports.add_new_damage_report(
-        carid=car_id,
-        subscriptionid=subscription_id,
-        reportdate=report_date,
-        description=description,
-        damagetypeid=damage_type_id
-        )
+    results = []
+    for item in data:
+        car_id = item.get("carid")
+        subscription_id = item.get("subscriptionid")
+        report_date = item.get("reportdate")
+        description = item.get("description")
+        damage_type_id = item.get("damagetypeid")
 
-    return jsonify(response_data), status
+        if not all ([car_id, subscription_id, report_date, description, damage_type_id]):
+            results.append({"status": 400, "response": {"error": "All these fields are required: cardid, subscriptionsid, reportdate, description, damagetypeid"}})
+        else:
+            status, response_data = damage_reports.add_new_damage_report(
+                carid=car_id,
+                subscriptionid=subscription_id,
+                reportdate=report_date,
+                description=description,
+                damagetypeid=damage_type_id
+            )
+            
+            results.append({"status": status, "response": response_data})
+
+    return jsonify({"message": "All reports have been processed. Check results to look for failures.", "results": results}), 200
 
 @app.route('/damage-reports/<int:id>', methods=['DELETE'])
 @swag_from('swagger/delete_damage_report.yaml')
