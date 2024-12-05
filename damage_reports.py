@@ -205,5 +205,5 @@ def delete_damage_report(damagereportid):
 
 
 
-#create_table()
+create_table()
 #add_csv_file_to_db('damage_reports.csv')

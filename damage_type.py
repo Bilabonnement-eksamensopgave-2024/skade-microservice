@@ -161,5 +161,5 @@ def delete_type_by_id(id):
         return [500, {"error": str(e)}]
 
 
-#create_table()
+create_table()
 #add_csv_to_db('damage_types.csv')
