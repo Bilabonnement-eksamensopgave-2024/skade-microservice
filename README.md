@@ -1,5 +1,30 @@
 # skade-microservice
 
+## Microservice Overview: Damage Management System
+
+The **Damage Management System** microservice is designed to manage damage-related information, including damage types and individual damage reports. It adheres to RESTful principles, enabling operations like data retrieval, creation, updating, and deletion. This service is modular, scalable, and can be integrated with other systems for damage tracking and cost estimation.
+
+---
+
+## Microservice Components
+
+### Damage Types API
+
+Handles the categorization of damages by severity and repair cost. Provides endpoints to:
+
+- Retrieve all damage types or a specific type by ID.
+- Add new damage types to the system.
+- Update or delete existing damage types.
+
+### Damage Reports API
+
+Tracks individual damage incidents, associating them with cars, subscriptions, and damage types. Key functionalities include:
+
+- Retrieving damage reports by various filters (e.g., car ID, subscription ID).
+- Adding new reports and updating existing ones.
+- Calculating total repair costs for subscriptions.
+
+
 # Endpoints
 
 This API provides several endpoints for managing damage types. Each damage type contains information about the type of damage, its severity, and associated repair costs.s
