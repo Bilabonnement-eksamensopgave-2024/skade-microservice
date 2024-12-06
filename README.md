@@ -1,38 +1,55 @@
 # skade-microservice
 
-## Microservice Overview: Damage Management System
+![Python](https://img.shields.io/badge/Python-3.x-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-2.x-green.svg)
+![SQLite](https://img.shields.io/badge/SQLite-3-blue.svg)
 
-The **Damage Management System** microservice is designed to manage damage-related information, including damage types and individual damage reports. It adheres to RESTful principles, enabling operations like data retrieval, creation, updating, and deletion. This service is modular, scalable, and can be integrated with other systems for damage tracking and cost estimation.
+## Overview
 
----
+The **Damage Management System** microservice manages damage-related information, including damage types and individual damage reports. This service provides RESTful endpoints for managing damage types and reports, with integrated SQLite database storage.
 
-## Microservice Components
+## Project Structure
+
+```
+skade-microservice/
+├── app.py                 # Main Flask application
+├── damage_type.py         # Damage types database operations
+├── damage_reports.py      # Damage reports database operations
+├── swagger/              # Swagger documentation
+└── damage.db             # SQLite database
+```
+
+## Setup and Installation
+
+1. **Environment Setup**
+   ```bash
+   # Create and configure .env file
+   DB_PATH=damage.db
+   PORT=5000
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   pip install flask sqlite3 python-dotenv flasgger
+   ```
+
+3. **Initialize Database**
+   ```bash
+   python app.py
+   ```
+
+## API Documentation
 
 ### Damage Types API
 
-Handles the categorization of damages by severity and repair cost. Provides endpoints to:
-
-- Retrieve all damage types or a specific type by ID.
-- Add new damage types to the system.
-- Update or delete existing damage types.
-
-### Damage Reports API
-
-Tracks individual damage incidents, associating them with cars, subscriptions, and damage types. Key functionalities include:
-
-- Retrieving damage reports by various filters (e.g., car ID, subscription ID).
-- Adding new reports and updating existing ones.
-- Calculating total repair costs for subscriptions.
-
-
-# Endpoints
-
-This API provides several endpoints for managing damage types. Each damage type contains information about the type of damage, its severity, and associated repair costs.s
-
-## Get All Damage Types
-- **URL:** `/damage_types`
+#### Get All Damage Types
+- **URL:** `/damage-types`
 - **Method:** `GET`
-- **Response:**
+- **Response Codes:**
+  - `200`: Success
+  - `204`: No content
+  - `500`: Server error
+- **Response Format:**
   ```json
   [
     {
@@ -41,44 +58,19 @@ This API provides several endpoints for managing damage types. Each damage type 
       "severity": "Minor",
       "repair_cost": 500
     }
-    // ... additional damage types
   ]
   ```
-- **Success Response Code:** `200 OK`
 
-## Get Damage Type by ID
-- **URL:** `/damage_types/<id>`
+#### Get Damage Type by ID
+- **URL:** `/damage-types/<id>`
 - **Method:** `GET`
-- **URL Parameters:** `id=[integer]` - ID of the damage type to retrieve
-- **Response:**
-  ```json
-  {
-    "id": 1,
-    "damage_type": "Ridse",
-    "severity": "Minor",
-    "repair_cost": 500
-  }
-  ```
-- **Success Response Code:** `200 OK`
+- **Response Codes:**
+  - `200`: Success
+  - `404`: Not found
+  - `500`: Server error
 
-## Update Damage Type
-- **URL:** `/damage_types/<id>`
-- **Method:** `PATCH`
-- **URL Parameters:** `id=[integer]` - ID of the damage type to update
-- **Request Body:**
-  ```json
-  {
-    "id": 1,
-    "damage_type": "Ridse",
-    "severity": "Minor",
-    "repair_cost": 500
-  }
-  ```
-- **Success Response Code:** `200 OK`
-- **Error Response Code:** `400 Bad Request` if no data is provided
-
-## Add New Damage Type
-- **URL:** `/damage_types`
+#### Add New Damage Type
+- **URL:** `/damage-types`
 - **Method:** `POST`
 - **Request Body:**
   ```json
@@ -88,182 +80,131 @@ This API provides several endpoints for managing damage types. Each damage type 
     "repair_cost": 500
   }
   ```
-- **Success Response Code:** `200 OK`
-- **Error Response Code:** `400 Bad Request` if no data is provided or if data is invalid
+- **Response Codes:**
+  - `201`: Created successfully
+  - `400`: Bad request
+  - `409`: Conflict
+  - `500`: Server error
 
-## Delete Damage Type
-- **URL:** `/damage_types/<id>`
+#### Update Damage Type
+- **URL:** `/damage-types/<id>`
+- **Method:** `PATCH`
+- **Response Codes:**
+  - `200`: Success
+  - `400`: Bad request
+  - `404`: Not found
+  - `500`: Server error
+
+#### Delete Damage Type
+- **URL:** `/damage-types/<id>`
 - **Method:** `DELETE`
-- **URL Parameters:** `id=[integer]` - ID of the damage type to delete
-- **Success Response Code:** `200 OK`
+- **Response Codes:**
+  - `204`: Deleted successfully
+  - `404`: Not found
+  - `500`: Server error
 
-## Data Structure
-Each damage type contains the following fields:
-- `id`: Unique identifier for the damage type (integer)
-- `damage_type`: Name/description of the damage type (string)
-- `severity`: Severity level of the damage (Minor, Moderate, Severe)
-- `repair_cost`: Estimated cost of repair in currency units (integer)
+### Damage Reports API
 
-
-# Damage Reports API Documentation
-
-## Base URL
-`/damage-reports`
-
-## Endpoints
-
-### Get All Damage Reports
-Get a list of all damage reports in the system.
-
-**Request**
-```http
-GET /damage-reports
-```
-
-**Response**
-- `200 OK`: Successfully retrieved damage reports
+#### Get All Damage Reports
+- **URL:** `/damage-reports`
+- **Method:** `GET`
+- **Response Codes:**
+  - `200`: Success
+  - `204`: No content
+  - `500`: Server error
+- **Response Format:**
   ```json
   [
     {
-      "damagereportid": integer,
-      "carid": integer,
-      "subscriptionid": integer,
-      "reportdate": string,
-      "description": string,
-      "damagetypeid": integer
+      "damagereportid": 1,
+      "carid": 123,
+      "subscriptionid": 456,
+      "reportdate": "2024-01-01",
+      "description": "Front bumper damage",
+      "damagetypeid": 1
     }
   ]
   ```
-- `204 No Content`: No damage reports found
-- `500 Internal Server Error`: Server error
 
-### Get Damage Report by ID
-Retrieve a specific damage report by its ID.
+#### Get Reports by Filters
+| Endpoint | Description |
+|----------|-------------|
+| `/damage-reports/<id>` | Get report by ID |
+| `/damage-reports/cars/<id>` | Get reports by car ID |
+| `/damage-reports/subscriptions/<id>` | Get reports by subscription ID |
+| `/damage-reports/subscriptions/<id>/total-damage` | Get total repair cost |
 
-**Request**
-```http
-GET /damage-reports/{id}
-```
-
-**Response**
-- `200 OK`: Successfully retrieved damage report
-- `404 Not Found`: Damage report not found
-- `500 Internal Server Error`: Server error
-
-### Get Damage Reports by Car ID
-Retrieve all damage reports for a specific car.
-
-**Request**
-```http
-GET /damage-reports/cars/{id}
-```
-
-**Response**
-- `200 OK`: Successfully retrieved damage reports
-- `404 Not Found`: No damage reports found for the car
-- `500 Internal Server Error`: Server error
-
-### Get Damage Reports by Subscription ID
-Retrieve all damage reports for a specific subscription.
-
-**Request**
-```http
-GET /damage-reports/subscriptions/{id}
-```
-
-**Response**
-- `200 OK`: Successfully retrieved damage reports
-- `404 Not Found`: No damage reports found for the subscription
-- `500 Internal Server Error`: Server error
-
-### Get Total Repair Cost by Subscription ID
-Calculate the total repair cost for a specific subscription.
-
-**Request**
-```http
-GET /damage-reports/subscriptions/{id}/total-damage
-```
-
-**Response**
-- `200 OK`:
+#### Add New Damage Report
+- **URL:** `/damage-reports`
+- **Method:** `POST`
+- **Request Body:**
   ```json
   {
-    "subscriptionid": integer,
-    "total_amount": number
+    "carid": 123,
+    "subscriptionid": 456,
+    "reportdate": "2024-01-01",
+    "description": "Front bumper damage",
+    "damagetypeid": 1
   }
   ```
-- `404 Not Found`: No damages found for the subscription
-- `500 Internal Server Error`: Server error
+- **Response Codes:**
+  - `200`: Success
+  - `400`: Bad request
+  - `409`: Conflict
+  - `500`: Server error
 
-### Update Damage Report
-Update an existing damage report by ID.
+#### Update Damage Report
+- **URL:** `/damage-reports/<id>`
+- **Method:** `PATCH`
+- **Response Codes:**
+  - `200`: Success
+  - `404`: Not found
+  - `500`: Server error
 
-**Request**
-```http
-PATCH /damage-reports/{id}
+#### Delete Damage Report
+- **URL:** `/damage-reports/<id>`
+- **Method:** `DELETE`
+- **Response Codes:**
+  - `200`: Success
+  - `404`: Not found
+  - `500`: Server error
+
+## Database Schema
+
+### Damage Types Table
+```sql
+CREATE TABLE damage_type (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    damage_type TEXT NOT NULL,
+    severity TEXT NOT NULL,
+    repair_cost INTEGER NOT NULL
+)
 ```
 
-**Request Body**
-```json
-{
-  "field_name": "new_value"
-}
+### Damage Reports Table
+```sql
+CREATE TABLE damage_reports (
+    damagereportid INTEGER PRIMARY KEY AUTOINCREMENT,
+    carid INTEGER NOT NULL,
+    subscriptionid INTEGER NOT NULL,
+    reportdate DATE NOT NULL,
+    description TEXT NOT NULL,
+    damagetypeid INTEGER NOT NULL
+)
 ```
 
-**Response**
-- `200 OK`: Successfully updated damage report
-- `404 Not Found`: Damage report not found
-- `500 Internal Server Error`: Server error
+## Development Guidelines
 
-### Add New Damage Report
-Create a new damage report.
+1. **Environment Variables**
+   - Always use the `.env` file for configuration
+   - Required variables: `DB_PATH`, `PORT`
 
-**Request**
-```http
-POST /damage-reports
-```
+2. **API Responses**
+   - All endpoints return JSON responses
+   - Include appropriate HTTP status codes
+   - Handle errors consistently
 
-**Request Body**
-```json
-{
-  "carid": integer,
-  "subscriptionid": integer,
-  "reportdate": string,
-  "description": string,
-  "damagetypeid": integer
-}
-```
-
-**Response**
-- `200 OK`: Successfully created damage report
-- `400 Bad Request`: Missing required fields
-- `409 Conflict`: Damage report already exists
-- `500 Internal Server Error`: Server error
-
-### Delete Damage Report
-Delete a damage report by ID.
-
-**Request**
-```http
-DELETE /damage-reports/{id}
-```
-
-**Response**
-- `200 OK`: Successfully deleted damage report
-- `404 Not Found`: Damage report not found
-- `500 Internal Server Error`: Server error
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+3. **Database Operations**
+   - Use context managers for database connections
+   - Implement proper error handling
+   - Validate input data before database operations
