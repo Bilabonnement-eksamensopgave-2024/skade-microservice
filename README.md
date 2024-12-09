@@ -1,12 +1,29 @@
-# skade-microservice
+# Skade Microservice
 
-## Microservice Overview: Damage Management System
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
-The **Damage Management System** microservice is designed to manage damage-related information, including damage types and individual damage reports. It adheres to RESTful principles, enabling operations like data retrieval, creation, updating, and deletion. This service is modular, scalable, and can be integrated with other systems for damage tracking and cost estimation.
+## Overview
+
+The **Skade Microservice** is a critical component of the **Bilabonnement management** system, designed to efficiently handle all damage report operations. Built using Flask and SQLite, it provides comprehensive APIs for managing damage types and damage reports, including retrieving, updating, and deleting records. The service implements a modular architecture with separate layers for API routes, data repositories, and database operations.
+
+
+### Key Features
+
+- **Damage Type Management**: Customizable management of various damage types with detailed definitions.
+- **Real-time Damage Report Tracking**: Monitor and manage damage reports dynamically.
+- **Comprehensive API Endpoints**: Retrieve, update, delete damage types, and handle damage reports with clear API structure and robust error handling.
+- **Role-based Access Control**: Ensures secure access to API endpoints based on user roles (admin, finance, maintenance).
+- **SQLite Database Integration**: Easy-to-use database with initialization scripts for setup.
+- **Swagger Documentation**: Clear API documentation for seamless integration and usage.
+- **Docker Containerization**: Simplifies deployment and management of the microservice.
+- **Modular Architecture**: Enhanced maintainability with separate layers for API routes, data repositories, and database operations.
 
 ---
-
-## Microservice Components
 
 ### Damage Types API
 
@@ -24,8 +41,65 @@ Tracks individual damage incidents, associating them with cars, subscriptions, a
 - Adding new reports and updating existing ones.
 - Calculating total repair costs for subscriptions.
 
+## Project Structure
 
-# Endpoints
+```
+
+skade-microservice/
+├── swagger/                              # Swagger documentation files
+│   ├── add_damage_report.yaml            
+│   ├── add_damage_type.yaml              
+│   ├── config.py                         
+│   ├── delete_damage_report.yaml         
+│   ├── delete_damage_type.yaml           
+│   ├── get_all_damage_reports.yaml       
+│   ├── get_damage_type_by_id.yaml        
+│   ├── get_damage_types.yaml             
+│   ├── get_the_selected_damage_report_carid.yaml
+│   ├── get_the_selected_damage_report_subscriptionid.yaml
+│   ├── get_the_selected_damage_report.yaml
+│   ├── get_total_cost_by_subscriptionid.yaml
+│   ├── update_damage_report_by_id.yaml   
+│   ├── update_damage_type.yaml           
+├── app.py                                 # Main application entry point
+├── auth.py                                # Authentication module
+├── damage_reports.csv                     # CSV data for damage reports
+├── damage_reports.py                      # Damage reports handling module
+├── damage_type.py                         # Damage type handling module
+├── damage_types.csv                       # CSV data for damage types
+├── Dockerfile                             # Docker configuration file
+├── README.md                              # Project documentation
+└── requirements.txt                       # Python dependencies
+```
+
+---
+## API Documentation
+
+### Damage types
+
+| Method | Endpoint                                 | Description                                | Request Body                                      | Response (200)                                          | Error Responses                                             |
+|--------|------------------------------------------|--------------------------------------------|--------------------------------------------------|--------------------------------------------------------|------------------------------------------------------------|
+| GET    | /damage-types                            | Get all damage types                       | N/A                                              | `[{"id": 1, "damage_type": "Scratch", "severity": "Low", "repair_cost": 150}]` | `404: {"error": "No damage types found"}`                  |
+| GET    | /damage-types/{id}                       | Get damage type by ID                      | N/A                                              | `{"id": 1, "damage_type": "Scratch", "severity": "Low", "repair_cost": 150}` | `404: {"error": "Damage type not found"}`                  |
+| PATCH  | /damage-types/{id}                       | Update damage type                         | `{"damage_type": "Dent", "severity": "Medium", "repair_cost": 200}` | `{"message": "Damage type updated successfully"}`       | `404: {"error": "Damage type not found"}`                  |
+| POST   | /damage-types                            | Add new damage type                        | `{"damage_type": "Crack", "severity": "High", "repair_cost": 300}` | `{"message": "Damage type added successfully"}`          | `400: {"error": "Missing required fields"}`               |
+| DELETE | /damage-types/{id}                       | Delete damage type by ID                   | N/A                                              | `{"message": "Damage type deleted successfully"}`        | `404: {"error": "Damage type not found"}`                  |
+
+### Damage reports
+
+| Method | Endpoint                                      | Description                               | Request Body                                      | Response (200)                                      | Error Responses                                      |
+|--------|-----------------------------------------------|-------------------------------------------|--------------------------------------------------|----------------------------------------------------|-----------------------------------------------------|
+| GET    | /damage-reports                               | Get all damage reports                    | N/A                                              | [{"damagereportid": 1, "carid": 101, "subscriptionid": 202, "reportdate": "2024-12-01", "description": "Minor scratch", "damagetypeid": 3}] | 204: {"message": "No items in the damage_reports"}  |
+| GET    | /damage-reports/<int:id>                      | Get damage report by ID                   | N/A                                              | {"damagereportid": 1, "carid": 101, "subscriptionid": 202, "reportdate": "2024-12-01", "description": "Minor scratch", "damagetypeid": 3} | 404: {"message": "Damage report not found"}         |
+| GET    | /damage-reports/cars/<int:id>                 | Get damage report by car ID               | N/A                                              | [{"damagereportid": 1, "carid": 101, "subscriptionid": 202, "reportdate": "2024-12-01", "description": "Minor scratch", "damagetypeid": 3}] | 404: {"message": "Damage report not found"}         |
+| GET    | /damage-reports/subscriptions/<int:id>        | Get damage report by subscription ID      | N/A                                              | [{"damagereportid": 1, "carid": 101, "subscriptionid": 202, "reportdate": "2024-12-01", "description": "Minor scratch", "damagetypeid": 3}] | 404: {"message": "Damage report not found"}         |
+| GET    | /damage-reports/subscriptions/<int:id>/total-damage | Get total repair cost for a subscription   | N/A                                              | {"subscriptionid": 202, "total_amount": 500.0}      | 404: {"message": "No damages found for the given subscription ID"} |
+| PATCH  | /damage-reports/<int:id>                      | Update damage report by ID                | {"description": "New scratch", "reportdate": "2024-12-10"} | {"message": "Damage report updated successfully", "damage_report_id": 1} | 404: {"message": "Damage report not found"}         |
+| POST   | /damage-reports                               | Add new damage report                     | {"carid": 101, "subscriptionid": 202, "reportdate": "2024-12-01", "description": "Minor scratch", "damagetypeid": 3} | {"message": "New damage report added successfully"}  | 400: {"error": "Missing required fields"}           |
+| DELETE | /damage-reports/<int:id>                      | Delete damage report by ID                | N/A                                              | {"message": "Damage report deleted successfully and ID sequence reset"} | 404: {"message": "Damage report not found"}         |
+
+
+## Postman Tests
 
 This API provides several endpoints for managing damage types. Each damage type contains information about the type of damage, its severity, and associated repair costs.s
 
