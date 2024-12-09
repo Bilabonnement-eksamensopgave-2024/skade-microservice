@@ -234,12 +234,20 @@ def get_the_selected_damage_report_subscriptionid(id):
     status, data = damage_reports.get_damage_reports_by_subscriptionid(subscriptionid=id)
     return jsonify(data), status
 
-# Total amount for repair cost by subscription id 
-@app.route('/damage-reports/subscriptions/<int:id>/total-damage', methods=['GET'])
+# Total cost for repair by subscription id 
+@app.route('/damage-reports/subscriptions/<int:id>/total-cost', methods=['GET'])
 @auth.role_required('admin','finance','maintenance')
 @swag_from('swagger/get_total_cost_by_subscriptionid.yaml')
 def get_total_cost_by_subscriptionid(id):
     status, data = damage_reports.get_the_repair_cost_by_subid(subscriptionid=id)
+    return jsonify(data), status
+
+# Total cost for repairs by car id 
+@app.route('/cars/<int:id>/total-cost', methods=['GET'])
+@auth.role_required('admin','finance','maintenance')
+@swag_from('swagger/get_total_cost_by_carid.yaml')
+def get_total_cost_by_carid(id):
+    status, data = damage_reports.get_the_repair_cost_by_carid(carid=id)
     return jsonify(data), status
 
 # Update damage report 

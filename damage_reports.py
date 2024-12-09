@@ -119,7 +119,7 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
             cur = conn.cursor()
 
             query = f''' 
-            SELECT SUM({TABLE_NAME}.repair_cost) AS total_amount
+            SELECT SUM({TABLE_NAME}.repair_cost) AS total_cost
             FROM {TABLE_NAME}
             JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
             WHERE {TABLE_NAME}.subscriptionid = ?'''
@@ -128,12 +128,36 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
             data = cur.fetchone()
 
             if data and data[0] is not None: 
-                return [200, {"subscriptionid": subscriptionid, "total_amount": data[0]}]
+                return [200, {"subscriptionid": subscriptionid, "total_cost": data[0]}]
             else:
                 return [404, {"message": "No damages found for the given subscription ID"}]
    
     except sqlite3.Error as e:
         return [500, {"error": str(e)}]
+    
+def get_the_repair_cost_by_carid(carid: int):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cur = conn.cursor()
+
+            query = f''' 
+            SELECT SUM({TABLE_NAME}.repair_cost) AS total_cost
+            FROM {TABLE_NAME}
+            JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
+            WHERE {TABLE_NAME}.carid = ?'''  
+
+            cur.execute(query, (carid,))
+            data = cur.fetchone()
+
+            if data and data[0] is not None: 
+                return [200, {"carid": carid, "total_cost": data[0]}]
+            else:
+                return [404, {"message": "No damages found for the given car ID"}]
+   
+    except sqlite3.Error as e:
+        return [500, {"error": str(e)}]
+
     
 def update_damage_report(damagereportid: int, update_fields: dict): 
     try: 
