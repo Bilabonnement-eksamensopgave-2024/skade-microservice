@@ -1,3 +1,4 @@
+#app.py
 from flask import Flask, jsonify, request
 from damage_type import get_all_damage_types, find_type_by_id, update_type, add_new_types, delete_type_by_id
 from dotenv import load_dotenv
