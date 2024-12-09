@@ -1,3 +1,4 @@
+#damage_type.py
 import sqlite3
 import csv
 from dotenv import load_dotenv
