@@ -1,4 +1,3 @@
-
 from flasgger import Swagger
 
 # Swagger configuration
@@ -21,15 +20,29 @@ swagger_config = {
 template = {
     "info": {
         "title": "Skade microservice",
-        "description": "This microservice handles damage-related operations such as adding, updating, deleting, and retrieving damages.",
+        "description": "This microservice handles Login-related operations such as adding, updating, deleting, and retrieving users.",
         "version": "1.0.0",
     },
     "securityDefinitions": {
-        "Bearer": {
+        "cookieAuth": {
             "type": "apiKey",
             "name": "Authorization",
-            "in": "header",
-            "description": "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\""
+            "in": "cookie",
+            "description": "JWT Authorization cookie with required roles. Example: \"Authorization: {token}\""
+        }
+    },
+    "security": [
+        {
+            "cookieAuth": []
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "cookieAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "cookie"
+            }
         }
     }
 }
