@@ -29,3 +29,9 @@ responses:
     description: Damage type not found
   500:
     description: Internal server error
+security:
+  - cookieAuth: []
+x-swagger-router-controller: find_type_by_id
+x-swagger-roles: 
+  - admin
+  - maintenance

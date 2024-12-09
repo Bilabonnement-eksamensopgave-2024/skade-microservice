@@ -63,4 +63,9 @@ responses:
             error:
               type: string
               example: "An unexpected error occurred"
-              
+security:
+  - cookieAuth: []
+x-swagger-router-controller: get_damage_reports_by_subscriptionid
+x-swagger-roles: 
+  - admin
+  - maintenance     

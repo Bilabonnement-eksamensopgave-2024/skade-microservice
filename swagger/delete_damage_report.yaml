@@ -41,3 +41,9 @@ responses:
             error:
               type: string
               example: "An unexpected error occurred"
+security:
+  - cookieAuth: []
+x-swagger-router-controller: delete_damage_report
+x-swagger-roles: 
+  - admin
+  - maintenance

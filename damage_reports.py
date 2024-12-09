@@ -119,7 +119,7 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
             cur = conn.cursor()
 
             query = f''' 
-            SELECT SUM(damage.repair_cost) AS total_amount
+            SELECT SUM({TABLE_NAME}.repair_cost) AS total_amount
             FROM {TABLE_NAME}
             JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
             WHERE {TABLE_NAME}.subscriptionid = ?'''

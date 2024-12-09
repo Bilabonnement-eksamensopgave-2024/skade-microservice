@@ -134,7 +134,7 @@ def service_info():
 
 @app.route('/damage-types', methods=['GET'])
 @auth.role_required('admin','finance','maintenance')
-@swag_from('swagger/get_damage_type.yaml')
+@swag_from('swagger/get_damage_types.yaml')
 def get_damage_types_route():
     result = get_all_damage_types()
     return jsonify(result[1]), result[0]

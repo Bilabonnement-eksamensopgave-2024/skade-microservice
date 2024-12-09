@@ -3,6 +3,7 @@ tags:
   - name: Damage Reports
 summary: Update a damage report by ID
 description: Update an existing damage report by its ID
+
 parameters:
   - in: path
     name: id
@@ -10,33 +11,49 @@ parameters:
     schema:
       type: integer
     description: The damage report ID
-requestBody:
-  required: true
-  content:
-    application/json:
-      schema:
-        type: object
-        properties:
-          car_id:
-            type: integer
-            example: 101
-          subscription_id:
-            type: integer
-            example: 202
-          report_date:
-            type: string
-            format: date
-            example: "2024-12-01"
-          description:
-            type: string
-            example: "Scratch on the left door"
-          damage_type_id:
-            type: integer
-            example: 1
-          repair_cost:
-            type: number
-            format: float
-            example: 150.75
+  - in: body
+    name: body
+    required: true
+    description: Fields to update for the damage report
+    schema:
+      type: object
+      properties:
+        car_id:
+          type: integer
+          description: ID of the car associated with the damage report
+          example: 101
+        subscription_id:
+          type: integer
+          description: ID of the subscription associated with the damage report
+          example: 202
+        report_date:
+          type: string
+          format: date
+          description: The date of the damage report
+          example: "2024-12-01"
+        description:
+          type: string
+          description: A description of the damage
+          example: "Scratch on the left door"
+        damage_type_id:
+          type: integer
+          description: ID of the damage type
+          example: 1
+        repair_cost:
+          type: number
+          format: float
+          description: The estimated cost of repairs
+          example: 150.75
+      required:
+        - description
+        - damage_type_id
+  - in: cookie
+    name: Authorization
+    required: true
+    schema:
+      type: string
+    description: JWT token with one of the required roles - ['admin','maintenance']
+
 responses:
   200:
     description: Damage report updated successfully
@@ -68,3 +85,9 @@ responses:
             error:
               type: string
               example: "An unexpected error occurred"
+security:
+  - cookieAuth: []
+x-swagger-router-controller: update_damage_report
+x-swagger-roles: 
+  - admin
+  - maintenance 

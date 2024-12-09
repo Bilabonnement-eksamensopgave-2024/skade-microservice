@@ -24,3 +24,10 @@ responses:
     description: No content
   500:
     description: Internal server error
+security:
+  - cookieAuth: []
+x-swagger-router-controller: get_all_damage_types
+x-swagger-roles: 
+  - admin
+  - maintenance
+  - finance
