@@ -10,6 +10,31 @@ requestBody:
       schema:
         type: object
         properties:
-          car_id:
-            type:
-            
+          carid:
+            type: integer
+          subscriptionid:
+            type: integer
+          reportdate:
+            type: string
+            format: date
+          description:
+            type: string
+          damagetypeid:
+            type: integer
+responses:
+  201:
+    description: New damage report added successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "New damage report added successfully."
+  400:
+    description: Bad request
+  409:
+    description: Conflict - Damage report already exists with these details
+  500:
+    description: Internal server error
