@@ -26,6 +26,7 @@ This microservice provides the following core functionalities for managing **dam
 - **Docker Containerization**: Simplifies deployment and management of the microservice.
 - **Modular Architecture**: Enhanced maintainability with separate layers for API routes, data repositories, and database operations.
 
+![arkitektur diagram](arkitektur_diagram.png)
 ---
 
 ### Damage Types API
