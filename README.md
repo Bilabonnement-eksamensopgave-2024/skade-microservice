@@ -74,10 +74,8 @@ def get_damage_types_route():
     result = get_all_damage_types()
     return jsonify(result[1]), result[0]
 
-## Project Structure
-
 ```
-
+## Project Structure
 skade-microservice/
 ├── swagger/                              # Swagger documentation files
 │   ├── add_damage_report.yaml            
