@@ -76,6 +76,7 @@ def get_damage_types_route():
 
 ```
 ## Project Structure
+```
 skade-microservice/
 ├── swagger/                              # Swagger documentation files
 │   ├── add_damage_report.yaml            
