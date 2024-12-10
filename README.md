@@ -15,6 +15,74 @@ The **Skade Microservice** is a critical component of the **Bilabonnement manage
 
 This microservice provides the following core functionalities for managing **damage types** and **damage reports**:
 
+## Domain Model
+![arkitektur diagram](domæne_model.png)
+
+The **Damage Microservice** is responsible for handling damage-related data, including damage reports and damage types. The domain model defines how these two key entities interact and their roles in the system.
+
+
+## Entities and Their Roles
+
+### Damage Reports
+- **Purpose**: Tracks instances of damage associated with cars and subscriptions.
+- **Attributes**:
+  - `damage_report_id`: A unique identifier for each damage report.
+  - `subscription_id`: Links the damage to a specific subscription.
+  - `car_id`: Links the damage to a specific car.
+  - `report_date`: The date when the damage was reported.
+  - `description`: A detailed description of the damage.
+  - `damage_type_id`: References the specific type of damage.
+
+- **Relationships**:
+  - **With Cars**: Each damage report is linked to a specific car. This allows users to query damages for a car.
+  - **With Subscriptions**: Each damage report is linked to a subscription, ensuring traceability to the customer or time frame during which the damage occurred.
+  - **With Damage Types**: Each damage report is categorized using a `damage_type_id` to associate it with a predefined damage classification.
+
+- **Methods in the Microservice**:
+  - `get_damage_reports()`: Retrieve all damage reports.
+  - `get_damage_reports_by_id(id)`: Retrieve a specific damage report by its ID.
+  - `get_damage_reports_by_subscription_id(subscription_id)`: Retrieve all damage reports for a specific subscription.
+  - `get_damage_reports_by_car_id(car_id)`: Retrieve all damage reports for a specific car.
+  - `get_total_price_of_subscription_damage(subscription_id)`: Calculate the total cost of damage for a subscription.
+  - `add_damage_report(new_damage_report)`: Add a new damage report.
+  - `update_damage_report(updated_damage_report)`: Update an existing damage report.
+  - `delete_damage_report(id)`: Delete a damage report.
+
+---
+
+### Damage Types
+- **Purpose**: Represents categories of damage, along with their severity and repair cost.
+- **Attributes**:
+  - `damage_type_id`: A unique identifier for each damage type.
+  - `damage_type`: The name of the damage type (e.g., scratch, dent, broken window).
+  - `severity`: Describes the severity level of the damage (e.g., minor, major).
+  - `repair_cost`: The cost to repair this type of damage.
+
+- **Relationships**:
+  - **With Damage Reports**: Each damage type can be referenced by multiple damage reports, enabling consistent categorization and costing.
+
+- **Methods in the Microservice**:
+  - `get_damage_types()`: Retrieve all damage types.
+  - `get_damage_type_by_id(id)`: Retrieve a specific damage type by its ID.
+  - `add_damage_type(new_damage_type)`: Add a new damage type.
+  - `update_damage_type(updated_damage_type)`: Update an existing damage type.
+  - `delete_damage_type(id)`: Delete a damage type.
+
+## Relationships in the damage microservice to other microservices
+
+1. **Damage Reports and Cars**:
+   - Each damage report is linked to one car.
+   - Users can query reports by car ID to track damage history.
+
+2. **Damage Reports and Subscriptions**:
+   - Each damage report is tied to a subscription to track damages during a specific rental period.
+
+3. **Damage Reports and Damage Types**:
+   - A damage report references a damage type for categorization and cost estimation.
+   - Ensures that all damages are consistently evaluated based on predefined classifications.
+
+---
+
 ### Key Features
 
 - **Damage Type Management**: Customizable management of various damage types with detailed definitions.
@@ -26,7 +94,19 @@ This microservice provides the following core functionalities for managing **dam
 - **Docker Containerization**: Simplifies deployment and management of the microservice.
 - **Modular Architecture**: Enhanced maintainability with separate layers for API routes, data repositories, and database operations.
 
+
+## Architecture diagram 
 ![arkitektur diagram](arkitektur_diagram.png)
+
+
+# Technology Stack
+
+- **Programming Language:** Python  
+- **Framework:** Flask  
+- **Database:** SQLite3  
+- **API Documentation:** Swagger/OpenAPI  
+- **Deployment:** Azure Web App (using Docker container)  
+- **CI/CD:** GitHub Actions  
 ---
 
 ### Damage Types API
@@ -105,8 +185,12 @@ skade-microservice/
 └── requirements.txt                       # Python dependencies
 ```
 
----
+## Enviroment Variables
+
 ## API Documentation
+### Base URL
+- Local: [Localhost URL](https://localhost:5000)
+- Production (Azure): [Azure URL](https://skade-microservice-cufpgqgfcufqa8er.northeurope-01.azurewebsites.net)
 
 ### Damage types
 
@@ -134,7 +218,7 @@ skade-microservice/
 
 ## Swagger Documentation
 Swagger UI is avalible at this link [Swagger Url](https://skade-microservice-cufpgqgfcufqa8er.northeurope-01.azurewebsites.net/docs)
-
+**To be able to use swagger on endpoints connected to damage microservice it has to be done via the swagger connected to the maintaince gateway**
 
 
 
