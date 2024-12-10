@@ -106,7 +106,7 @@ def service_info():
                 "method": "GET",
                 "description": "Retrieve the total cost for the damage on a car by Car ID",
                 "role-required": ["admin", "finance", "maintenance"],
-                "response": "JSON object of the total amount and the subscription ID or 404 error"
+                "response": "JSON object of the total amount and the car ID or 404 error"
             },
             {
                 "path": "/damage_reports",
