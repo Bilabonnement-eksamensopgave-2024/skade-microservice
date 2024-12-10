@@ -217,8 +217,9 @@ skade-microservice/
 
 
 ## Swagger Documentation
-Swagger UI is avalible at this link [Swagger Url](https://skade-microservice-cufpgqgfcufqa8er.northeurope-01.azurewebsites.net/docs)
-**To be able to use swagger on endpoints connected to damage microservice it has to be done via the swagger connected to the maintaince gateway**
+Swagger UI is available at this link [Swagger Url](https://skade-microservice-cufpgqgfcufqa8er.northeurope-01.azurewebsites.net/docs)  
+**To be able to use Swagger on endpoints connected to the damage microservice, it has to be done via the Swagger connected to the maintenance gateway.**
+
 
 
 
