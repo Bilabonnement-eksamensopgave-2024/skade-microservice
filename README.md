@@ -15,6 +15,22 @@ The **Skade Microservice** is a critical component of the **Bilabonnement manage
 
 This microservice provides the following core functionalities for managing **damage types** and **damage reports**:
 
+### Damage Types API
+
+Handles the categorization of damages by severity and repair cost. Provides endpoints to:
+
+- Retrieve all damage types or a specific type by ID.
+- Add new damage types to the system.
+- Update or delete existing damage types.
+
+### Damage Reports API
+
+Tracks individual damage incidents, associating them with cars, subscriptions, and damage types. Key functionalities include:
+
+- Retrieving damage reports by various filters (e.g., car ID, subscription ID).
+- Adding new reports and updating existing ones.
+- Calculating total repair costs for subscriptions.
+
 ## Domain Model
 ![arkitektur diagram](domæne_model.png)
 
@@ -109,23 +125,6 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
 - **CI/CD:** GitHub Actions  
 ---
 
-### Damage Types API
-
-Handles the categorization of damages by severity and repair cost. Provides endpoints to:
-
-- Retrieve all damage types or a specific type by ID.
-- Add new damage types to the system.
-- Update or delete existing damage types.
-
-### Damage Reports API
-
-Tracks individual damage incidents, associating them with cars, subscriptions, and damage types. Key functionalities include:
-
-- Retrieving damage reports by various filters (e.g., car ID, subscription ID).
-- Adding new reports and updating existing ones.
-- Calculating total repair costs for subscriptions.
-
----
 
 ### CRUD Operations
 
