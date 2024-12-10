@@ -95,9 +95,16 @@ def service_info():
                 "response": "JSON object of a specific damage report or error"
             },
             {
-                "path": "/damage-reports/subscriptions/<int:id>/total-damage",
+                "path": "/damage-reports/subscriptions/<int:id>/total-cost",
                 "method": "GET",
-                "description": "Retrieve the total damage amount for a car by Subscription ID",
+                "description": "Retrieve the total cost for the damage on a car by Subscription ID",
+                "role-required": ["admin", "finance", "maintenance"],
+                "response": "JSON object of the total amount and the subscription ID or 404 error"
+            },
+            {
+                "path": "/cars/<int:id>/total-cost",
+                "method": "GET",
+                "description": "Retrieve the total cost for the damage on a car by Car ID",
                 "role-required": ["admin", "finance", "maintenance"],
                 "response": "JSON object of the total amount and the subscription ID or 404 error"
             },
