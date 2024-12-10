@@ -185,6 +185,8 @@ skade-microservice/
 ```
 
 ## Enviroment Variables
+- DB_PATH : /home/damage.db
+- SECRET_KEY : This code should be contained in a .env file so it will take the key from that file
 
 ## API Documentation
 ### Base URL
