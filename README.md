@@ -11,6 +11,9 @@
 
 The **Skade Microservice** is a critical component of the **Bilabonnement management** system, designed to efficiently handle all damage report operations. Built using Flask and SQLite, it provides comprehensive APIs for managing damage types and damage reports, including retrieving, updating, and deleting records. The service implements a modular architecture with separate layers for API routes, data repositories, and database operations.
 
+## Core Functionalities
+
+This microservice provides the following core functionalities for managing **damage types** and **damage reports**:
 
 ### Key Features
 
@@ -40,6 +43,36 @@ Tracks individual damage incidents, associating them with cars, subscriptions, a
 - Retrieving damage reports by various filters (e.g., car ID, subscription ID).
 - Adding new reports and updating existing ones.
 - Calculating total repair costs for subscriptions.
+
+---
+
+### CRUD Operations
+
+1. **Create (POST)**: Add new records (damage types or damage reports).
+2. **Read (GET)**: Retrieve records (single or multiple damage types or damage reports).
+3. **Update (PATCH)**: Modify existing records (damage types or damage reports) by ID.
+4. **Delete (DELETE)**: Remove records (damage types or damage reports) by ID.
+
+These operations ensure that users can manage damage types and damage reports via the API, allowing the system to maintain accurate and up-to-date data.
+
+### JWT Authentication & Role-Based Access
+
+The system utilizes **JSON Web Tokens (JWT)** for authenticating and authorizing users. Upon login, a user is issued a token that must be included in the `Authorization` header when making requests to the endpoints.
+
+#### Available Roles:
+- **admin**: Full access to all operations (Create, Read, Update, Delete).
+- **finance**: Limited access to financial data, including total cost calculations.
+- **maintenance**: Access to most operations, with some restrictions on adding and modifying data.
+
+#### Example of Role Usage:
+In `app.py`, you can see that routes are decorated with the `@auth.role_required` decorator, specifying the roles allowed to access each endpoint. For example:
+
+```python
+@app.route('/damage-types', methods=['GET'])
+@auth.role_required('admin','finance','maintenance')
+def get_damage_types_route():
+    result = get_all_damage_types()
+    return jsonify(result[1]), result[0]
 
 ## Project Structure
 
