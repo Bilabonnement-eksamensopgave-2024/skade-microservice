@@ -119,10 +119,10 @@ def get_the_repair_cost_by_subid(subscriptionid: int):
             cur = conn.cursor()
 
             query = f''' 
-            SELECT SUM({TABLE_NAME}.repair_cost) AS total_cost
+            SELECT SUM(repair_cost) AS total_cost
             FROM {TABLE_NAME}
-            JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
-            WHERE {TABLE_NAME}.subscriptionid = ?'''
+            JOIN damage_type ON {TABLE_NAME}.damagetypeid = damagetypeid
+            WHERE subscriptionid = ?'''
 
             cur.execute(query, (subscriptionid,))
             data = cur.fetchone()
@@ -142,10 +142,10 @@ def get_the_repair_cost_by_carid(carid: int):
             cur = conn.cursor()
 
             query = f''' 
-            SELECT SUM({TABLE_NAME}.repair_cost) AS total_cost
+            SELECT SUM(repair_cost) AS total_cost
             FROM {TABLE_NAME}
-            JOIN damage ON {TABLE_NAME}.damagetypeid = damage.id
-            WHERE {TABLE_NAME}.carid = ?'''  
+            JOIN damage_type ON {TABLE_NAME}.damagetypeid = damagetypeid
+            WHERE carid = ?'''  
 
             cur.execute(query, (carid,))
             data = cur.fetchone()
