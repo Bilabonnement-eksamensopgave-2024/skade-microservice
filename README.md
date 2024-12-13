@@ -34,6 +34,39 @@ Tracks individual damage incidents, associating them with cars, subscriptions, a
 ## Domain Model
 ![arkitektur diagram](domæne_model.png)
 
+``` mermaid
+classDiagram
+  class damage_reports {
+        Int damage_report_id
+        Int subscription_id
+        Int car_id
+        Data report_date
+        String description
+        Int damage_type_id
+        get_damage_reports() : List
+        get_damage_reports_by_id(id : Int) : Dict 
+        get_damage_reports_by_subscriptionid(id : Int) : List
+        get_total_price_of_subscription_damage(subscription_id: Int) : Int
+        get_damage_reports_by_carid(id : Int) : List
+        get_the_repair_cost_by_subid(id : Int) : List
+        get_the_repair_cost_by_carid(id : Int) : List
+        update_damage_report(id : Int, updated_fields : Dict) : String
+        delete_damage_report(id : Int) : String
+        add_new_damage_report(new_damage_report : Dict) : String
+  }
+  class damage_types {
+        Int damage_type_id
+        String damge_type
+        String severity
+        Int repair_cost
+        get_all_damage_types() : List
+        find_type_by_id(id : Int) : Dict 
+        update_type(id : Int, data : Any) : String
+        delete_type_by_id(id : Int) : String
+        add_new_types(data : Any) : String
+  }
+```
+
 The **Damage Microservice** is responsible for handling damage-related data, including damage reports and damage types. The domain model defines how these two key entities interact and their roles in the system.
 
 
@@ -109,10 +142,6 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
 - **Swagger Documentation**: Clear API documentation for seamless integration and usage.
 - **Docker Containerization**: Simplifies deployment and management of the microservice.
 - **Modular Architecture**: Enhanced maintainability with separate layers for API routes, data repositories, and database operations.
-
-
-## Architecture diagram 
-![arkitektur diagram](arkitektur_diagram.png)
 
 
 # Technology Stack
