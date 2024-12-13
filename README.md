@@ -124,7 +124,6 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
   - `update_damage_report(carid, subscriptionid, reportdate, description, damagetypeid)`: Update an existing damage report.
   - `delete_damage_report(id)`: Delete a damage report.
 
----
 
 ### Damage Types
 - **Purpose**: Represents categories of damage, along with their severity and repair cost.
@@ -142,7 +141,7 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
   - `update_type(id, data)`: Update an existing damage type.
   - `delete_type_by_id(id)`: Delete a damage type.
 
-## Relationships in the damage microservice to other microservices
+### Relationships in the damage microservice to other microservices
 
 1. **Damage Reports and Cars**:
    - Each damage report is linked to one car.
@@ -177,8 +176,6 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
 - **API Documentation:** Swagger/OpenAPI  
 - **Deployment:** Azure Web App (using Docker container)  
 - **CI/CD:** GitHub Actions  
----
-
 
 ## Enviroment Variables
 - DB_PATH : /home/damage.db
