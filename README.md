@@ -154,7 +154,6 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
    - A damage report references a damage type for categorization and cost estimation.
    - Ensures that all damages are consistently evaluated based on predefined classifications.
 
----
 
 ### Key Features
 
