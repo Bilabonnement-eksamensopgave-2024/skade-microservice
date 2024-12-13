@@ -65,6 +65,8 @@ classDiagram
         delete_type_by_id(id : Int) : String
         add_new_types(data : Any) : String
   }
+
+   damage_reports "*" -- "1" damage_types
 ```
 
 The **Damage Microservice** is responsible for handling damage-related data, including damage reports and damage types. The domain model defines how these two key entities interact and their roles in the system.
