@@ -79,7 +79,6 @@ def get_damage_types_route():
     return jsonify(result[1]), result[0]
 ```
 
-
 ## Domain Model
 
 ``` mermaid
