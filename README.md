@@ -7,6 +7,27 @@
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
 ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Core Functionalities](#core-functionalities)
+  - [Damage Types API](#damage-types-api)
+  - [Damage Reports API](#damage-reports-api)
+  - [CRUD Operations](#crud-operations)
+  - [JWT Authentication & Role-Based Access](#jwt-authentication--role-based-access)
+- [Domain Model](#domain-model)
+- [Entities and Their Roles](#entities-and-their-roles)
+  - [Damage Reports](#damage-reports)
+  - [Damage Types](#damage-types)
+  - [Relationships in the damage microservice to other microservices](#relationships-in-the-damage-microservice-to-other-microservices)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Environment Variables](#environment-variables)
+- [API Documentation](#api-documentation)
+  - [Damage Types Endpoints](#damage-types-endpoints)
+  - [Damage Reports Endpoints](#damage-reports-endpoints)
+- [Swagger Documentation](#swagger-documentation)
+
 ## Overview
 
 The **Damage Microservice** is a critical component of the **Bilabonnement management** system, designed to efficiently handle all damage report operations. Built using Flask and SQLite, it provides comprehensive APIs for managing damage types and damage reports, including retrieving, updating, and deleting records. The service implements a modular architecture with separate layers for API routes, data repositories, and database operations.
@@ -56,7 +77,6 @@ In `app.py`, you can see that routes are decorated with the `@auth.role_required
 def get_damage_types_route():
     result = get_all_damage_types()
     return jsonify(result[1]), result[0]
-
 ```
 
 
@@ -212,15 +232,3 @@ The **Damage Microservice** is responsible for handling damage-related data, inc
 ## Swagger Documentation
 Swagger UI is available at this link [Swagger Url](https://skade-microservice-cufpgqgfcufqa8er.northeurope-01.azurewebsites.net/docs)  
 **To be able to use Swagger on endpoints connected to the damage microservice, it has to be done via the Swagger connected to the maintenance gateway.**
-
-
-
-
-
-
-
-
-
-
-
-
