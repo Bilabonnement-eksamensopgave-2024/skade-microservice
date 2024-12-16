@@ -99,7 +99,7 @@ classDiagram
         get_the_repair_cost_by_carid(id : Int) : List
         update_damage_report(id : Int, updated_fields : Dict) : String
         delete_damage_report(id : Int) : String
-        add_new_damage_report(new_damage_report : Dict) : String
+        add_new_damage_report(data : Any) : String
   }
   class damage_types {
         Int damage_type_id
