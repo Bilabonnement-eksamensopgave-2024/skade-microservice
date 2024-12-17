@@ -90,27 +90,27 @@ classDiagram
         Data report_date
         String description
         Int damage_type_id
-        get_damage_reports() : List
-        get_damage_reports_by_id(id : Int) : Dict 
-        get_damage_reports_by_subscriptionid(id : Int) : List
-        get_total_price_of_subscription_damage(id: Int) : Int
-        get_damage_reports_by_carid(id : Int) : List
-        get_the_repair_cost_by_subid(id : Int) : List
-        get_the_repair_cost_by_carid(id : Int) : List
-        update_damage_report(id : Int, updated_fields : Dict) : String
-        delete_damage_report(id : Int) : String
-        add_new_damage_report(data : Any) : String
+        get_damage_reports()  List
+        get_damage_reports_by_id(id : Int)  Dict 
+        get_damage_reports_by_subscriptionid(id : Int)  List
+        get_total_price_of_subscription_damage(id: Int)  Int
+        get_damage_reports_by_carid(id : Int)  List
+        get_the_repair_cost_by_subid(id : Int)  List
+        get_the_repair_cost_by_carid(id : Int)  List
+        update_damage_report(id : Int, updated_fields : Dict)  String
+        delete_damage_report(id : Int)  String
+        add_new_damage_report(data : Any)  String
   }
   class damage_types {
         Int damage_type_id
         String damge_type
         String severity
         Int repair_cost
-        get_all_damage_types() : List
-        find_type_by_id(id : Int) : Dict 
-        update_type(id : Int, data : Any) : String
-        delete_type_by_id(id : Int) : String
-        add_new_types(data : Any) : String
+        get_all_damage_types()  List
+        find_type_by_id(id : Int)  Dict 
+        update_type(id : Int, data : Any)  String
+        delete_type_by_id(id : Int)  String
+        add_new_types(data : Any)  String
   }
 
    damage_reports "*" -- "1" damage_types
